@@ -132,12 +132,18 @@ def digest(xmlfile):
        
     #print(price_list) #debug line
     
+    #-----------------------------------------------------------------------------------------
+    
+    no_of_ads = len(aid_list)
+    
     #return information:
-    return aid_list, title_list, date_list, loc_list, cat_list, desc_list, price_list
+    return aid_list, title_list, date_list, loc_list, cat_list, desc_list, price_list, no_of_ads, ad_table
     
-
+    
+    
+#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 def terms_txt (aid_list, title_list, desc_list):
-    
+
     #WHY IS IT SKIPPING OVER THE TERM F4??? ***** CHECK THIS OUT?
     #removes unaccepted terms from title_list. 
     #This loops twice because for some reason only doing it once doesn't remove all the terms < 2 chars long...    
@@ -211,9 +217,7 @@ def terms_txt (aid_list, title_list, desc_list):
     stl_len = (len(split_title_list)) #same for both lists (10 elements in this case)
     
     #creates the list to be printed
-    
     export_file = open("terms.txt", "w+")
-
     i=0
     while i < stl_len:
         for term in split_title_list[i]:
@@ -225,22 +229,63 @@ def terms_txt (aid_list, title_list, desc_list):
         #print("-----") #debug line
         i+=1
         
+#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#        
 
+def pdates_txt (aid_list, date_list, cat_list, loc_list, no_of_ads):
+    
+    export_file = open("pdates.txt", "w+")
+    i=0
+    while i < no_of_ads:
+        #print(date_list[i] + ":" + aid_list[i] + ":" + cat_list[i] + ":" + loc_list[i]) debug line
+        export_file.write(date_list[i] + ":" + aid_list[i] + ":" + cat_list[i] + ":" + loc_list[i] + "\n")
+            
+        i+=1    
 
+#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 
+def prices_txt (price_list, aid_list, cat_list, loc_list, no_of_ads):
+    
+    export_file = open("prices.txt", "w+")
+    i=0
+    while i < no_of_ads:
+        #print(price_list[i] + ":" + aid_list[i] + "," + cat_list[i] + "," + loc_list[i]) debug line
+        export_file.write(price_list[i] + ":" + aid_list[i] + "," + cat_list[i] + "," + loc_list[i] + "\n")
+            
+        i+=1       
+#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 
+def ads_txt(aid_list, ad_table, no_of_ads):
 
+    export_file = open("ads.txt", "w+")
+    i=0
+    
+    del ad_table[0]
+    
+    while i < no_of_ads:
+        print(aid_list[i] + ":" + ad_table[i])
+        export_file.write(aid_list[i] + ":" + ad_table[i])
+            
+        i+=1   
 
 
 #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 def main():
     
+    #gets data from xml file
     #filename = input("Enter file name: ")
-    aid_list, title_list, date_list, loc_list, cat_list, desc_list, price_list = digest("10.xml") #all of these variables are assigned accordingly.
+    aid_list, title_list, date_list, loc_list, cat_list, desc_list, price_list, no_of_ads, ad_table = digest("10.xml") #all of these variables are assigned accordingly.
     
     #create terms.txt file
     terms_txt (aid_list, title_list, desc_list)
 
+    #creates pdates.txt file
+    pdates_txt (aid_list, date_list, cat_list, loc_list, no_of_ads)
+
+    #creates prices.txt file
+    prices_txt (price_list, aid_list, cat_list, loc_list, no_of_ads)
+    
+    #creates ads.txt file
+    ads_txt(aid_list, ad_table, no_of_ads)
 
 
 
