@@ -1,0 +1,20 @@
+#!/bin/bash
+clear
+
+sort ads.txt | uniq > ads_s.txt
+less ads_s.txt | perl break.pl > ads_b.txt
+db_load -T -f ads_b.txt -t hash ad.idx
+
+sort terms.txt | uniq > terms_s.txt
+less terms_s.txt | perl break.pl > terms_b.txt
+db_load -T -f terms_b.txt -t btree te.idx
+
+sort pdates.txt | uniq > pdates_s.txt
+less pdates_s.txt | perl break.pl > pdates_b.txt
+db_load -T -f pdates_b.txt -t btree da.idx
+
+sort prices.txt | uniq > prices_s.txt
+less prices_s.txt | perl break.pl > prices_b.txt
+db_load -T -f prices_b.txt -t btree pr.idx
+
+echo "Conversion complete."
